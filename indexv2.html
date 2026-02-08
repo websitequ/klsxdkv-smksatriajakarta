@@ -1,0 +1,2164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Sekolah - Login</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* ============================================
+           CSS RESET & VARIABLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* School Theme Colors - Biru & Emas */
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-gold: #f59e0b;
+            --accent-light: #fbbf24;
+            --dark-bg: #0f172a;
+            --card-bg: rgba(30, 58, 138, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            
+            --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --transition-fast: 0.3s ease;
+            --transition-smooth: 0.5s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           LOGIN PAGE STYLES
+           ============================================ */
+        .login-page {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .login-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            z-index: -2;
+        }
+
+        .login-bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 0.8s ease forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .school-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-gold);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--primary-blue);
+            margin-bottom: 16px;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        }
+
+        .school-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .school-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent-gold);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.25rem;
+        }
+
+        .input-field:focus ~ .input-icon {
+            color: var(--accent-gold);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-gold);
+            border: none;
+            border-radius: 12px;
+            color: var(--primary-blue);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+        }
+
+        .login-button.admin {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .login-button.admin:hover {
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .login-info {
+            text-align: center;
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+
+        .login-info i {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .admin-hint {
+            text-align: center;
+            margin-top: 12px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           DASHBOARD STYLES
+           ============================================ */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .dashboard.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: rgba(30, 58, 138, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-blue);
+        }
+
+        .header-title h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .header-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .datetime-display {
+            text-align: right;
+        }
+
+        .time-display {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .date-display {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .dashboard-content {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            margin-bottom: 24px;
+        }
+
+        .welcome-text {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .welcome-text strong {
+            color: var(--accent-gold);
+        }
+
+        /* Wali Kelas Profile Card */
+        .walikelas-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .walikelas-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-gold);
+        }
+
+        .walikelas-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary-blue);
+            border: 4px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+            flex-shrink: 0;
+        }
+
+        .walikelas-info h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .walikelas-info .jabatan {
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .walikelas-info .detail {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .walikelas-info .detail span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .walikelas-info .detail i {
+            color: var(--accent-gold);
+        }
+
+        /* Menu Buttons */
+        .menu-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .menu-button {
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .menu-button.active {
+            background: var(--gradient-gold);
+            border-color: transparent;
+            color: var(--primary-blue);
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .menu-button i {
+            font-size: 1.25rem;
+        }
+
+        /* Content Section */
+        .content-section {
+            display: none;
+            animation: contentFadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes contentFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: rgba(30, 58, 138, 0.3);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--accent-gold);
+        }
+
+        .section-content {
+            padding: 24px;
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        /* Custom Scrollbar */
+        .section-content::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .section-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .section-content::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.3);
+            border-radius: 4px;
+        }
+
+        .section-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.5);
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 400px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 14px 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            background: rgba(30, 58, 138, 0.5);
+        }
+
+        .data-table td {
+            padding: 16px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .user-details h4 {
+            font-weight: 600;
+            margin-bottom: 3px;
+            font-size: 0.95rem;
+        }
+
+        .user-details span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-gold {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .badge-green {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .badge-red {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .absen-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* Schedule Styles */
+        .schedule-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .day-schedule {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .day-header {
+            background: rgba(30, 58, 138, 0.4);
+            padding: 16px 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .day-header i {
+            color: var(--accent-gold);
+            font-size: 1.25rem;
+        }
+
+        .day-content {
+            padding: 20px;
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 16px;
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .time-slot {
+            width: 110px;
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .subject-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .subject-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+
+        .teacher-name {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .room-badge {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Admin Dashboard Styles */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-left: 4px solid transparent;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+        .admin-card.siswa .admin-card-icon {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .admin-card.guru .admin-card-icon {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .admin-card.jadwal .admin-card-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .admin-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .admin-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--dark-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            background: rgba(30, 58, 138, 0.3);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+            transition: color var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-gold);
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-gold);
+            color: var(--primary-blue);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Action Buttons in Table */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            font-size: 1.1rem;
+        }
+
+        .action-btn.edit {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .action-btn.delete {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .add-btn {
+            background: var(--gradient-success);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 32px 24px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 16px;
+            }
+
+            .datetime-display {
+                text-align: center;
+                order: -1;
+                width: 100%;
+            }
+
+            .time-display {
+                font-size: 1.5rem;
+            }
+
+            .dashboard-content {
+                padding: 20px;
+            }
+
+            .walikelas-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+
+            .walikelas-info .detail {
+                justify-content: center;
+            }
+
+            .menu-container {
+                justify-content: center;
+            }
+
+            .menu-button {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .data-table {
+                font-size: 0.85rem;
+            }
+
+            .user-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 20px;
+            }
+
+            .schedule-item {
+                flex-wrap: wrap;
+            }
+
+            .time-slot {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(245, 158, 11, 0.3);
+            border-top-color: var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--success);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="ph ph-check-circle toast-icon"></i>
+        <span id="toastMessage">Operasi berhasil!</span>
+    </div>
+
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-background"></div>
+        <div class="login-bg-pattern"></div>
+        
+        <div class="login-container">
+            <div class="login-card">
+                <div class="school-logo">
+                    <div class="logo-icon">
+                        <i class="ph ph-student"></i>
+                    </div>
+                    <h2 class="school-name">SMK SATRIA JAKARTA</h2>
+                    <p class="school-subtitle">Sistem Informasi Akademik</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <i class="ph ph-envelope input-icon"></i>
+                        <input 
+                            type="text" 
+                            id="email" 
+                            class="input-field" 
+                            placeholder="Email atau Username"
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <i class="ph ph-lock-key input-icon"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="input-field" 
+                            placeholder="Password"
+                        >
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        <span>Masuk sebagai User</span>
+                        <i class="ph ph-arrow-right"></i>
+                    </button>
+                    
+                    <button type="button" class="login-button admin" onclick="loginAsAdmin()">
+                        <span>Masuk sebagai Admin</span>
+                        <i class="ph ph-gear"></i>
+                    </button>
+                </form>
+
+                <div class="login-info">
+                    <i class="ph ph-info"></i>
+                    <strong>User:</strong> Apa saja bisa | <strong>Admin:</strong> Password: Rahasia!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard -->
+    <div class="dashboard" id="userDashboard">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="header-logo">
+                    <i class="ph ph-student"></i>
+                </div>
+                <div class="header-title">
+                    <h1>SMK SATRIA JAKARTA</h1>
+                    <p>Sistem Informasi Akademik</p>
+                </div>
+            </div>
+
+            <div class="datetime-display">
+                <div class="time-display" id="clock">00:00:00</div>
+                <div class="date-display" id="date">Loading...</div>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                <i class="ph ph-sign-out"></i>
+                <span>Keluar</span>
+            </button>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="welcome-section">
+                <p class="welcome-text">Selamat datang, <strong id="userName">Pengguna</strong>! 👋</p>
+            </div>
+
+            <!-- Wali Kelas Profile -->
+            <div class="walikelas-card">
+                <div class="walikelas-avatar">
+                    <i class="ph ph-user-circle"></i>
+                </div>
+                <div class="walikelas-info">
+                    <div class="jabatan">
+                        <i class="ph ph-crown"></i>
+                        Wali Kelas X DKV
+                    </div>
+                    <h2>Nama Walikelas Anda</h2>
+                    <div class="detail">
+                        <span><i class="ph ph-identification-card"></i> - </span>
+                        <span><i class="ph ph-envelope"></i> -@sekolah.id </span>
+                        <span><i class="ph ph-phone"></i> 0812-3456-7890</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Buttons -->
+            <div class="menu-container">
+                <button class="menu-button active" onclick="showUserMenu('siswa')" id="btn-user-siswa">
+                    <i class="ph ph-users-three"></i>
+                    Daftar Siswa
+                </button>
+                <button class="menu-button" onclick="showUserMenu('guru')" id="btn-user-guru">
+                    <i class="ph ph-chalkboard-teacher"></i>
+                    Daftar Guru
+                </button>
+                <button class="menu-button" onclick="showUserMenu('jadwal')" id="btn-user-jadwal">
+                    <i class="ph ph-calendar"></i>
+                    Jadwal Mapel
+                </button>
+            </div>
+
+            <!-- Content: Daftar Siswa -->
+            <div class="content-section active" id="content-user-siswa">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="ph ph-users-three"></i>
+                            Daftar Siswa Kelas X DKV
+                        </h2>
+                        <span class="badge badge-blue" id="count-siswa">25 Siswa</span>
+                    </div>
+                    <div class="section-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No. Absen</th>
+                                    <th>Nama Siswa</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userStudentsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content: Daftar Guru -->
+            <div class="content-section" id="content-user-guru">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="ph ph-chalkboard-teacher"></i>
+                            Daftar Guru Mata Pelajaran
+                        </h2>
+                        <span class="badge badge-gold" id="count-guru">13 Guru</span>
+                    </div>
+                    <div class="section-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nama Guru</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th>Kelas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTeachersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content: Jadwal Mapel -->
+            <div class="content-section" id="content-user-jadwal">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="ph ph-calendar"></i>
+                            Jadwal Pelajaran Kelas X DKV
+                        </h2>
+                        <span class="badge badge-green">Semester Genap 2026/2027</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="schedule-container" id="userScheduleContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="dashboard" id="adminDashboard">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="header-logo">
+                    <i class="ph ph-gear"></i>
+                </div>
+                <div class="header-title">
+                    <h1>Admin Dashboard</h1>
+                    <p>SMK SATRIA JAKARTA</p>
+                </div>
+            </div>
+
+            <div class="datetime-display">
+                <div class="time-display" id="adminClock">00:00:00</div>
+                <div class="date-display" id="adminDate">Loading...</div>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                <i class="ph ph-sign-out"></i>
+                <span>Keluar</span>
+            </button>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="welcome-section">
+                <p class="welcome-text">Panel Admin - <strong>Kelola Data Sekolah</strong> 🔧</p>
+            </div>
+
+            <!-- Admin Menu Cards -->
+            <div class="admin-grid">
+                <div class="admin-card siswa" onclick="showAdminSection('siswa')">
+                    <div class="admin-card-icon">
+                        <i class="ph ph-users-three"></i>
+                    </div>
+                    <h3>Kelola Siswa</h3>
+                    <p>Tambah, edit, atau hapus data siswa. Kelola nomor absen dan status siswa.</p>
+                </div>
+
+                <div class="admin-card guru" onclick="showAdminSection('guru')">
+                    <div class="admin-card-icon">
+                        <i class="ph ph-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Kelola Guru</h3>
+                    <p>Tambah, edit, atau hapus data guru. Atur mata pelajaran dan kelas.</p>
+                </div>
+
+                <div class="admin-card jadwal" onclick="showAdminSection('jadwal')">
+                    <div class="admin-card-icon">
+                        <i class="ph ph-calendar"></i>
+                    </div>
+                    <h3>Kelola Jadwal</h3>
+                    <p>Atur jadwal pelajaran harian. Kelola waktu, mapel, dan ruangan.</p>
+                </div>
+            </div>
+
+            <!-- Admin Content Sections -->
+            <div id="admin-section-siswa" class="admin-content-section" style="display: none;">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="ph ph-users-three"></i>
+                            Manajemen Data Siswa
+                        </h2>
+                        <button class="add-btn" onclick="openModal('siswa', 'add')">
+                            <i class="ph ph-plus"></i>
+                            Tambah Siswa
+                        </button>
+                    </div>
+                    <div class="section-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No. Absen</th>
+                                    <th>Nama Siswa</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminStudentsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-section-guru" class="admin-content-section" style="display: none;">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="ph ph-chalkboard-teacher"></i>
+                            Manajemen Data Guru
+                        </h2>
+                        <button class="add-btn" onclick="openModal('guru', 'add')">
+                            <i class="ph ph-plus"></i>
+                            Tambah Guru
+                        </button>
+                    </div>
+                    <div class="section-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nama Guru</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th>Kelas</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTeachersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-section-jadwal" class="admin-content-section" style="display: none;">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="ph ph-calendar"></i>
+                            Manajemen Jadwal Pelajaran
+                        </h2>
+                        <span class="badge badge-green">Edit mode</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="schedule-container" id="adminScheduleContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Add/Edit -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">
+                    <i class="ph ph-plus-circle"></i>
+                    Tambah Data
+                </h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                <button class="btn btn-primary" onclick="saveData()">
+                    <i class="ph ph-check"></i>
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA STORAGE (In-memory)
+        // ============================================
+        
+        let studentsData = [
+            { id: 1, absen: 1, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 2, absen: 2, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 3, absen: 3, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 4, absen: 4, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 5, absen: 5, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 6, absen: 6, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 7, absen: 7, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 8, absen: 8, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 9, absen: 9, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 10, absen: 10, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 11, absen: 11, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 12, absen: 12, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 13, absen: 13, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 14, absen: 14, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 15, absen: 15, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 16, absen: 16, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 17, absen: 17, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 18, absen: 18, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 19, absen: 19, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 20, absen: 20, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 21, absen: 21, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 22, absen: 22, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 23, absen: 23, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 24, absen: 24, name: "Nama Siswa/Siswi", status: "Aktif" },
+            { id: 25, absen: 25, name: "Nama Siswa/Siswi", status: "Aktif" }
+        ];
+
+        let teachersData = [
+            { id: 1, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 2, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 3, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 4, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 5, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 6, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 7, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 8, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 9, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 10, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 11, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 12, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
+            { id: 13, name: "Nama Guru", subject: "Mapel", class: "X DKV" }
+        ];
+
+        let scheduleData = {
+            "Senin": [
+                { id: 1, time: "12:30 - 14:00", subject: "Matematika ", teacher: "-", room: "-" },
+                { id: 2, time: "14:00 - 15:30", subject: "Informatika", teacher: "-", room: "-" },
+                { id: 3, time: "15:00 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 4, time: "16:00 - 17:30", subject: "PABP", teacher: "-", room: "-" },
+                { id: 5, time: "-", subject: "-", teacher: "-", room: "-" },
+                { id: 6, time: "-", subject: "-", teacher: "-", room: "-" }
+            ],
+            "Selasa": [
+                { id: 7, time: "12:30 - 13:30", subject: "PP", teacher: "-", room: "-" },
+                { id: 8, time: "13:00 - 15:00", subject: "DPD", teacher: "-", room: "Lab Komputer" },
+                { id: 9, time: "15:00 - 15:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
+                { id: 10, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 11, time: "16:00 - 16:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
+                { id: 12, time: "16:30 - 17:30", subject: "Bahasa Indonesia", teacher: "-", room: "-" }
+            ],
+            "Rabu": [
+                { id: 13, time: "12:30 - 13:30", subject: "Sejarah", teacher: "-", room: "-" },
+                { id: 14, time: "13:30 - 14:00", subject: "BTQ", teacher: "-", room: "-" },
+                { id: 15, time: "14:00 - 15:30", subject: "Ipas", teacher: "-", room: "-" },
+                { id: 16, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 17, time: "16:00 - 17:30", subject: "DPD", teacher: "-", room: "Lab Komputer" },
+                { id: 18, time: "-", subject: "-", teacher: "-", room: "-" }
+            ],
+            "Kamis": [
+                { id: 19, time: "12:30 - 13:30", subject: "Seni Budaya", teacher: "-", room: "-" },
+                { id: 20, time: "13:30 - 14:30", subject: "PJOK", teacher: "-", room: "-" },
+                { id: 21, time: "14:30 - 15:30", subject: "DPD", teacher: "-", room: "Lab Komputer" },
+                { id: 22, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 23, time: "16:00 - 16:30", subject: "DPD", teacher: "-", room: "Lab Komputer" },
+                { id: 24, time: "16:30 - 17:30", subject: "KDKA", teacher: "-", room: "-" }
+            ],
+            "Jumat": [
+                { id: 25, time: "12:30 - 13:30", subject: "-", teacher: "-", room: "-" },
+                { id: 26, time: "13:30 - 15:00", subject: "DPD", teacher: "-", room: "Lab Komputer" },
+                { id: 27, time: "15:00 - 15:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
+                { id: 28, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 29, time: "16:00 - 16:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
+                { id: 30, time: "16:30 - 17:30", subject: "Bahasa Indonesia", teacher: "-", room: "-" }
+            ]
+        };
+
+        // Global variables
+        let currentEditId = null;
+        let currentEditType = null;
+        let isAdmin = false;
+
+        // ============================================
+        // LOGIN FUNCTIONALITY
+        // ============================================
+        
+        const loginForm = document.getElementById('loginForm');
+        const loginPage = document.getElementById('loginPage');
+        const userDashboard = document.getElementById('userDashboard');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim() || 'Pengguna';
+            
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                showUserDashboard(email);
+            }, 1000);
+        });
+
+        function loginAsAdmin() {
+            const password = prompt("Masukkan password admin:");
+            if (password === "admin123") {
+                showLoading();
+                setTimeout(() => {
+                    hideLoading();
+                    showAdminDashboard();
+                }, 1000);
+            } else {
+                showToast("Password admin salah!", "error");
+            }
+        }
+
+        function showLoading() {
+            loadingOverlay.classList.add('show');
+        }
+
+        function hideLoading() {
+            loadingOverlay.classList.remove('show');
+        }
+
+        function showUserDashboard(username) {
+            isAdmin = false;
+            loginPage.style.display = 'none';
+            userDashboard.classList.add('show');
+            document.getElementById('userName').textContent = username;
+            
+            renderUserStudents();
+            renderUserTeachers();
+            renderUserSchedule();
+            
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        }
+
+        function showAdminDashboard() {
+            isAdmin = true;
+            loginPage.style.display = 'none';
+            adminDashboard.classList.add('show');
+            
+            updateAdminDateTime();
+            setInterval(updateAdminDateTime, 1000);
+        }
+
+        function logout() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                userDashboard.classList.remove('show');
+                adminDashboard.classList.remove('show');
+                loginPage.style.display = 'flex';
+                loginForm.reset();
+                
+                // Reset states
+                document.getElementById('email').focus();
+                showUserMenu('siswa');
+                hideAllAdminSections();
+            }, 800);
+        }
+
+        // ============================================
+        // USER MENU NAVIGATION
+        // ============================================
+        
+        function showUserMenu(menuName) {
+            document.querySelectorAll('#userDashboard .content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('#userDashboard .menu-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(`content-user-${menuName}`).classList.add('active');
+            document.getElementById(`btn-user-${menuName}`).classList.add('active');
+        }
+
+        // ============================================
+        // ADMIN SECTIONS
+        // ============================================
+        
+        function showAdminSection(section) {
+            hideAllAdminSections();
+            document.getElementById(`admin-section-${section}`).style.display = 'block';
+            
+            if (section === 'siswa') renderAdminStudents();
+            else if (section === 'guru') renderAdminTeachers();
+            else if (section === 'jadwal') renderAdminSchedule();
+        }
+
+        function hideAllAdminSections() {
+            document.querySelectorAll('.admin-content-section').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+
+        // ============================================
+        // RENDER FUNCTIONS - USER
+        // ============================================
+        
+        function renderUserStudents() {
+            const tbody = document.getElementById('userStudentsTable');
+            tbody.innerHTML = studentsData.map(student => `
+                <tr>
+                    <td><span class="absen-number">${student.absen}</span></td>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar"><i class="ph ph-student"></i></div>
+                            <div class="user-details">
+                                <h4>${student.name}</h4>
+                                <span>Kelas X DKV</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-gold">${student.status}</span></td>
+                </tr>
+            `).join('');
+            document.getElementById('count-siswa').textContent = `${studentsData.length} Siswa`;
+        }
+
+        function renderUserTeachers() {
+            const tbody = document.getElementById('userTeachersTable');
+            tbody.innerHTML = teachersData.map(teacher => `
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar" style="background: var(--gradient-gold); color: var(--primary-blue);">
+                                <i class="ph ph-chalkboard-teacher"></i>
+                            </div>
+                            <div class="user-details">
+                                <h4>${teacher.name}</h4>
+                                <span>Guru ${teacher.subject}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${teacher.subject}</td>
+                    <td><span class="badge badge-blue">${teacher.class}</span></td>
+                </tr>
+            `).join('');
+            document.getElementById('count-guru').textContent = `${teachersData.length} Guru`;
+        }
+
+        function renderUserSchedule() {
+            const container = document.getElementById('userScheduleContainer');
+            container.innerHTML = renderScheduleHTML(scheduleData);
+        }
+
+        // ============================================
+        // RENDER FUNCTIONS - ADMIN
+        // ============================================
+        
+        function renderAdminStudents() {
+            const tbody = document.getElementById('adminStudentsTable');
+            tbody.innerHTML = studentsData.map(student => `
+                <tr>
+                    <td><span class="absen-number">${student.absen}</span></td>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar"><i class="ph ph-student"></i></div>
+                            <div class="user-details">
+                                <h4>${student.name}</h4>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-gold">${student.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn edit" onclick="editData('siswa', ${student.id})">
+                                <i class="ph ph-pencil"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteData('siswa', ${student.id})">
+                                <i class="ph ph-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAdminTeachers() {
+            const tbody = document.getElementById('adminTeachersTable');
+            tbody.innerHTML = teachersData.map(teacher => `
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar" style="background: var(--gradient-gold); color: var(--primary-blue);">
+                                <i class="ph ph-chalkboard-teacher"></i>
+                            </div>
+                            <div class="user-details">
+                                <h4>${teacher.name}</h4>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${teacher.subject}</td>
+                    <td><span class="badge badge-blue">${teacher.class}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn edit" onclick="editData('guru', ${teacher.id})">
+                                <i class="ph ph-pencil"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteData('guru', ${teacher.id})">
+                                <i class="ph ph-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAdminSchedule() {
+            const container = document.getElementById('adminScheduleContainer');
+            let html = '';
+            
+            Object.entries(scheduleData).forEach(([day, lessons]) => {
+                html += `
+                    <div class="day-schedule">
+                        <div class="day-header" style="justify-content: space-between;">
+                            <span><i class="ph ph-calendar-check"></i> ${day}</span>
+                            <button class="add-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="addScheduleItem('${day}')">
+                                <i class="ph ph-plus"></i> Tambah
+                            </button>
+                        </div>
+                        <div class="day-content">
+                            ${lessons.map(lesson => `
+                                <div class="schedule-item" style="${lesson.subject === 'Istirahat' ? 'opacity: 0.6;' : ''}">
+                                    <div class="time-slot">${lesson.time}</div>
+                                    <div class="subject-info">
+                                        <div class="subject-name">${lesson.subject}</div>
+                                        ${lesson.teacher !== '-' ? `<div class="teacher-name">${lesson.teacher}</div>` : ''}
+                                    </div>
+                                    ${lesson.room !== '-' ? `<div class="room-badge">${lesson.room}</div>` : ''}
+                                    <div class="action-btns" style="margin-left: auto;">
+                                        <button class="action-btn edit" onclick="editScheduleItem('${day}', ${lesson.id})">
+                                            <i class="ph ph-pencil"></i>
+                                        </button>
+                                        <button class="action-btn delete" onclick="deleteScheduleItem('${day}', ${lesson.id})">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function renderScheduleHTML(data) {
+            return Object.entries(data).map(([day, lessons]) => `
+                <div class="day-schedule">
+                    <div class="day-header">
+                        <i class="ph ph-calendar-check"></i>
+                        ${day}
+                    </div>
+                    <div class="day-content">
+                        ${lessons.map(lesson => `
+                            <div class="schedule-item" style="${lesson.subject === 'Istirahat' ? 'opacity: 0.6;' : ''}">
+                                <div class="time-slot">${lesson.time}</div>
+                                <div class="subject-info">
+                                    <div class="subject-name">${lesson.subject}</div>
+                                    ${lesson.teacher !== '-' ? `<div class="teacher-name">${lesson.teacher}</div>` : ''}
+                                </div>
+                                ${lesson.room !== '-' ? `<div class="room-badge">${lesson.room}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // MODAL & CRUD OPERATIONS
+        // ============================================
+        
+        function openModal(type, action, id = null) {
+            currentEditType = type;
+            currentEditId = id;
+            
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            let title = action === 'add' ? 'Tambah' : 'Edit';
+            let content = '';
+            
+            if (type === 'siswa') {
+                modalTitle.innerHTML = `<i class="ph ph-student"></i> ${title} Data Siswa`;
+                const student = id ? studentsData.find(s => s.id === id) : {};
+                content = `
+                    <div class="form-group">
+                        <label class="form-label">Nomor Absen</label>
+                        <input type="number" class="form-input" id="input-absen" value="${student.absen || ''}" placeholder="Masukkan nomor absen">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-input" id="input-name" value="${student.name || ''}" placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="input-status">
+                            <option value="Aktif" ${student.status === 'Aktif' ? 'selected' : ''}>Aktif</option>
+                            <option value="Tidak Aktif" ${student.status === 'Tidak Aktif' ? 'selected' : ''}>Tidak Aktif</option>
+                        </select>
+                    </div>
+                `;
+            } else if (type === 'guru') {
+                modalTitle.innerHTML = `<i class="ph ph-chalkboard-teacher"></i> ${title} Data Guru`;
+                const teacher = id ? teachersData.find(t => t.id === id) : {};
+                content = `
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-input" id="input-name" value="${teacher.name || ''}" placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mata Pelajaran</label>
+                        <input type="text" class="form-input" id="input-subject" value="${teacher.subject || ''}" placeholder="Masukkan mata pelajaran">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kelas</label>
+                        <input type="text" class="form-input" id="input-class" value="${teacher.class || 'X DKV'}" placeholder="Masukkan kelas">
+                    </div>
+                `;
+            }
+            
+            modalBody.innerHTML = content;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+            currentEditId = null;
+            currentEditType = null;
+        }
+
+        function saveData() {
+            if (currentEditType === 'siswa') {
+                const absen = parseInt(document.getElementById('input-absen').value);
+                const name = document.getElementById('input-name').value;
+                const status = document.getElementById('input-status').value;
+                
+                if (!absen || !name) {
+                    showToast('Mohon isi semua field!', 'error');
+                    return;
+                }
+                
+                if (currentEditId) {
+                    const index = studentsData.findIndex(s => s.id === currentEditId);
+                    studentsData[index] = { ...studentsData[index], absen, name, status };
+                    showToast('Data siswa berhasil diupdate!');
+                } else {
+                    const newId = Math.max(...studentsData.map(s => s.id)) + 1;
+                    studentsData.push({ id: newId, absen, name, status });
+                    showToast('Siswa baru berhasil ditambahkan!');
+                }
+                
+                renderAdminStudents();
+                if (!isAdmin) renderUserStudents();
+                
+            } else if (currentEditType === 'guru') {
+                const name = document.getElementById('input-name').value;
+                const subject = document.getElementById('input-subject').value;
+                const cls = document.getElementById('input-class').value;
+                
+                if (!name || !subject) {
+                    showToast('Mohon isi semua field!', 'error');
+                    return;
+                }
+                
+                if (currentEditId) {
+                    const index = teachersData.findIndex(t => t.id === currentEditId);
+                    teachersData[index] = { ...teachersData[index], name, subject, class: cls };
+                    showToast('Data guru berhasil diupdate!');
+                } else {
+                    const newId = Math.max(...teachersData.map(t => t.id)) + 1;
+                    teachersData.push({ id: newId, name, subject, class: cls });
+                    showToast('Guru baru berhasil ditambahkan!');
+                }
+                
+                renderAdminTeachers();
+                if (!isAdmin) renderUserTeachers();
+            }
+            
+            closeModal();
+        }
+
+        function editData(type, id) {
+            openModal(type, 'edit', id);
+        }
+
+        function deleteData(type, id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
+            
+            if (type === 'siswa') {
+                studentsData = studentsData.filter(s => s.id !== id);
+                renderAdminStudents();
+                if (!isAdmin) renderUserStudents();
+                showToast('Siswa berhasil dihapus!');
+            } else if (type === 'guru') {
+                teachersData = teachersData.filter(t => t.id !== id);
+                renderAdminTeachers();
+                if (!isAdmin) renderUserTeachers();
+                showToast('Guru berhasil dihapus!');
+            }
+        }
+
+        // Schedule CRUD
+        function addScheduleItem(day) {
+            const time = prompt("Masukkan waktu (contoh: 07:00 - 08:30):");
+            if (!time) return;
+            
+            const subject = prompt("Masukkan nama mata pelajaran:");
+            if (!subject) return;
+            
+            const teacher = prompt("Masukkan nama guru:");
+            const room = prompt("Masukkan ruangan:");
+            
+            const newId = Math.max(...Object.values(scheduleData).flat().map(i => i.id)) + 1;
+            scheduleData[day].push({
+                id: newId,
+                time,
+                subject,
+                teacher: teacher || '-',
+                room: room || '-'
+            });
+            
+            renderAdminSchedule();
+            if (!isAdmin) renderUserSchedule();
+            showToast('Jadwal berhasil ditambahkan!');
+        }
+
+        function editScheduleItem(day, id) {
+            const item = scheduleData[day].find(i => i.id === id);
+            
+            const time = prompt("Edit waktu:", item.time);
+            if (time === null) return;
+            
+            const subject = prompt("Edit mata pelajaran:", item.subject);
+            if (subject === null) return;
+            
+            const teacher = prompt("Edit guru:", item.teacher);
+            const room = prompt("Edit ruangan:", item.room);
+            
+            const index = scheduleData[day].findIndex(i => i.id === id);
+            scheduleData[day][index] = {
+                ...scheduleData[day][index],
+                time: time || item.time,
+                subject: subject || item.subject,
+                teacher: teacher !== null ? teacher : item.teacher,
+                room: room !== null ? room : item.room
+            };
+            
+            renderAdminSchedule();
+            if (!isAdmin) renderUserSchedule();
+            showToast('Jadwal berhasil diupdate!');
+        }
+
+        function deleteScheduleItem(day, id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) return;
+            
+            scheduleData[day] = scheduleData[day].filter(i => i.id !== id);
+            renderAdminSchedule();
+            if (!isAdmin) renderUserSchedule();
+            showToast('Jadwal berhasil dihapus!');
+        }
+
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = `toast ${type}`;
+            toast.querySelector('.toast-icon').className = `ph ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'} toast-icon`;
+            toastMessage.textContent = message;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================
+        // REAL-TIME CLOCK
+        // ============================================
+        
+        function updateDateTime() {
+            const now = new Date();
+            
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            const dateString = `${dayName}, ${date} ${month} ${year}`;
+            
+            document.getElementById('clock').textContent = timeString;
+            document.getElementById('date').textContent = dateString;
+        }
+
+        function updateAdminDateTime() {
+            const now = new Date();
+            
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            const dateString = `${dayName}, ${date} ${month} ${year}`;
+            
+            document.getElementById('adminClock').textContent = timeString;
+            document.getElementById('adminDate').textContent = dateString;
+        }
+
+        // ============================================
+        // AUTO FOCUS INPUT
+        // ============================================
+        
+        document.getElementById('email').focus();
+    </script>
+</body>
+</html>
