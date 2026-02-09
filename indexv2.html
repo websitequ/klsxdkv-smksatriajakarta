@@ -233,13 +233,6 @@
             display: block;
         }
 
-        .admin-hint {
-            text-align: center;
-            margin-top: 12px;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
         /* ============================================
            DASHBOARD STYLES
            ============================================ */
@@ -1005,6 +998,26 @@
             box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
         }
 
+        /* Reset Data Button */
+        .reset-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+            margin-top: 20px;
+        }
+
+        .reset-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .login-card {
@@ -1172,7 +1185,7 @@
                     <div class="logo-icon">
                         <i class="ph ph-student"></i>
                     </div>
-                    <h2 class="school-name">SMK SATRIA JAKARTA</h2>
+                    <h2 class="school-name">SMA Negeri 1 Prestasi</h2>
                     <p class="school-subtitle">Sistem Informasi Akademik</p>
                 </div>
 
@@ -1210,7 +1223,7 @@
 
                 <div class="login-info">
                     <i class="ph ph-info"></i>
-                    <strong>User:</strong> Apa saja bisa | <strong>Admin:</strong> Password: Rahasia!
+                    <strong>User:</strong> Apa saja bisa | <strong>Admin:</strong> Password: admin123
                 </div>
             </div>
         </div>
@@ -1224,7 +1237,7 @@
                     <i class="ph ph-student"></i>
                 </div>
                 <div class="header-title">
-                    <h1>SMK SATRIA JAKARTA</h1>
+                    <h1>SMA Negeri 1 Prestasi</h1>
                     <p>Sistem Informasi Akademik</p>
                 </div>
             </div>
@@ -1253,13 +1266,13 @@
                 <div class="walikelas-info">
                     <div class="jabatan">
                         <i class="ph ph-crown"></i>
-                        Wali Kelas X DKV
+                        Wali Kelas X IPA 1
                     </div>
-                    <h2>Nama Walikelas Anda</h2>
+                    <h2 id="waliKelasName">Dra. Dewi Kusuma Wardani, M.Pd</h2>
                     <div class="detail">
-                        <span><i class="ph ph-identification-card"></i> - </span>
-                        <span><i class="ph ph-envelope"></i> -@sekolah.id </span>
-                        <span><i class="ph ph-phone"></i> 0812-3456-7890</span>
+                        <span><i class="ph ph-identification-card"></i> <span id="waliKelasNIP">NIP. 19780515 200502 2 003</span></span>
+                        <span><i class="ph ph-envelope"></i> <span id="waliKelasEmail">dewi.wardani@sekolah.id</span></span>
+                        <span><i class="ph ph-phone"></i> <span id="waliKelasPhone">0812-3456-7890</span></span>
                     </div>
                 </div>
             </div>
@@ -1286,7 +1299,7 @@
                     <div class="section-header">
                         <h2 class="section-title">
                             <i class="ph ph-users-three"></i>
-                            Daftar Siswa Kelas X DKV
+                            Daftar Siswa Kelas X IPA 1
                         </h2>
                         <span class="badge badge-blue" id="count-siswa">25 Siswa</span>
                     </div>
@@ -1336,9 +1349,9 @@
                     <div class="section-header">
                         <h2 class="section-title">
                             <i class="ph ph-calendar"></i>
-                            Jadwal Pelajaran Kelas X DKV
+                            Jadwal Pelajaran Kelas X IPA 1
                         </h2>
-                        <span class="badge badge-green">Semester Genap 2026/2027</span>
+                        <span class="badge badge-green">Semester Genap 2024/2025</span>
                     </div>
                     <div class="section-content">
                         <div class="schedule-container" id="userScheduleContainer"></div>
@@ -1357,7 +1370,7 @@
                 </div>
                 <div class="header-title">
                     <h1>Admin Dashboard</h1>
-                    <p>SMK SATRIA JAKARTA</p>
+                    <p>SMA Negeri 1 Prestasi</p>
                 </div>
             </div>
 
@@ -1475,6 +1488,12 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Reset Data Button -->
+            <button class="reset-btn" onclick="resetAllData()">
+                <i class="ph ph-arrow-counter-clockwise"></i>
+                Reset Semua Data ke Default
+            </button>
         </main>
     </div>
 
@@ -1505,97 +1524,186 @@
 
     <script>
         // ============================================
-        // DATA STORAGE (In-memory)
+        // DEFAULT DATA (Initial Data)
         // ============================================
         
-        let studentsData = [
-            { id: 1, absen: 1, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 2, absen: 2, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 3, absen: 3, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 4, absen: 4, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 5, absen: 5, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 6, absen: 6, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 7, absen: 7, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 8, absen: 8, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 9, absen: 9, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 10, absen: 10, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 11, absen: 11, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 12, absen: 12, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 13, absen: 13, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 14, absen: 14, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 15, absen: 15, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 16, absen: 16, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 17, absen: 17, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 18, absen: 18, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 19, absen: 19, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 20, absen: 20, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 21, absen: 21, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 22, absen: 22, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 23, absen: 23, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 24, absen: 24, name: "Nama Siswa/Siswi", status: "Aktif" },
-            { id: 25, absen: 25, name: "Nama Siswa/Siswi", status: "Aktif" }
+        const defaultStudentsData = [
+            { id: 1, absen: 1, name: "Ahmad Rizky Pratama", status: "Aktif" },
+            { id: 2, absen: 2, name: "Anisa Putri Maharani", status: "Aktif" },
+            { id: 3, absen: 3, name: "Bagas Kurniawan", status: "Aktif" },
+            { id: 4, absen: 4, name: "Budi Santoso Wijaya", status: "Aktif" },
+            { id: 5, absen: 5, name: "Citra Lestari Dewi", status: "Aktif" },
+            { id: 6, absen: 6, name: "Dedi Kurniawan", status: "Aktif" },
+            { id: 7, absen: 7, name: "Dewi Anggraini Sari", status: "Aktif" },
+            { id: 8, absen: 8, name: "Eka Putri Maharani", status: "Aktif" },
+            { id: 9, absen: 9, name: "Fajar Hidayatullah", status: "Aktif" },
+            { id: 10, absen: 10, name: "Farhan Maulana", status: "Aktif" },
+            { id: 11, absen: 11, name: "Gita Ananda Sari", status: "Aktif" },
+            { id: 12, absen: 12, name: "Hendra Gunawan", status: "Aktif" },
+            { id: 13, absen: 13, name: "Indah Permatasari", status: "Aktif" },
+            { id: 14, absen: 14, name: "Joko Susanto", status: "Aktif" },
+            { id: 15, absen: 15, name: "Kartika Sari Dewi", status: "Aktif" },
+            { id: 16, absen: 16, name: "Lukman Hakim", status: "Aktif" },
+            { id: 17, absen: 17, name: "Maya Indah Lestari", status: "Aktif" },
+            { id: 18, absen: 18, name: "Nanda Pratama Putra", status: "Aktif" },
+            { id: 19, absen: 19, name: "Nina Agustina", status: "Aktif" },
+            { id: 20, absen: 20, name: "Raka Aditya Pratama", status: "Aktif" },
+            { id: 21, absen: 21, name: "Rina Wulandari", status: "Aktif" },
+            { id: 22, absen: 22, name: "Sandi Nugroho", status: "Aktif" },
+            { id: 23, absen: 23, name: "Sinta Dewi Maharani", status: "Aktif" },
+            { id: 24, absen: 24, name: "Teguh Prasetyo", status: "Aktif" },
+            { id: 25, absen: 25, name: "Yuni Kartika Sari", status: "Aktif" }
         ];
 
-        let teachersData = [
-            { id: 1, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 2, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 3, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 4, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 5, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 6, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 7, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 8, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 9, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 10, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 11, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 12, name: "Nama Guru", subject: "Mapel", class: "X DKV" },
-            { id: 13, name: "Nama Guru", subject: "Mapel", class: "X DKV" }
+        const defaultTeachersData = [
+            { id: 1, name: "Dra. Siti Aminah, M.Pd", subject: "Matematika", class: "X IPA 1" },
+            { id: 2, name: "Dr. Budi Hartono, M.Sc", subject: "Fisika", class: "X IPA 1" },
+            { id: 3, name: "Dra. Rina Wulandari, M.Si", subject: "Biologi", class: "X IPA 1" },
+            { id: 4, name: "Ahmad Fauzi, S.Pd, M.Pd", subject: "Kimia", class: "X IPA 1" },
+            { id: 5, name: "Sri Wahyuni, S.Pd", subject: "Bahasa Indonesia", class: "X IPA 1" },
+            { id: 6, name: "John Smith, M.Ed", subject: "Bahasa Inggris", class: "X IPA 1" },
+            { id: 7, name: "Agus Supriyanto, S.Pd", subject: "Sejarah", class: "X IPA 1" },
+            { id: 8, name: "Dewi Kusuma, S.Pd, M.Si", subject: "Geografi", class: "X IPA 1" },
+            { id: 9, name: "Ustadz Ahmad Syafi'i", subject: "Pendidikan Agama", class: "X IPA 1" },
+            { id: 10, name: "Dra. Maya Anggraini", subject: "Seni Budaya", class: "X IPA 1" },
+            { id: 11, name: "Hendra Wijaya, S.Pd", subject: "Penjasorkes", class: "X IPA 1" },
+            { id: 12, name: "Ratna Sari, S.Pd", subject: "Prakarya", class: "X IPA 1" },
+            { id: 13, name: "Dr. Bambang Sutrisno", subject: "PKN", class: "X IPA 1" }
         ];
 
-        let scheduleData = {
+        const defaultScheduleData = {
             "Senin": [
-                { id: 1, time: "12:30 - 14:00", subject: "Matematika ", teacher: "-", room: "-" },
-                { id: 2, time: "14:00 - 15:30", subject: "Informatika", teacher: "-", room: "-" },
-                { id: 3, time: "15:00 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
-                { id: 4, time: "16:00 - 17:30", subject: "PABP", teacher: "-", room: "-" },
-                { id: 5, time: "-", subject: "-", teacher: "-", room: "-" },
-                { id: 6, time: "-", subject: "-", teacher: "-", room: "-" }
+                { id: 1, time: "07:00 - 08:30", subject: "Matematika", teacher: "Dra. Siti Aminah", room: "R-101" },
+                { id: 2, time: "08:30 - 10:00", subject: "Fisika", teacher: "Dr. Budi Hartono", room: "Lab Fisika" },
+                { id: 3, time: "10:00 - 10:15", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 4, time: "10:15 - 11:45", subject: "Biologi", teacher: "Dra. Rina Wulandari", room: "Lab Bio" },
+                { id: 5, time: "11:45 - 12:30", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 6, time: "12:30 - 14:00", subject: "Bahasa Indonesia", teacher: "Sri Wahyuni", room: "R-101" }
             ],
             "Selasa": [
-                { id: 7, time: "12:30 - 13:30", subject: "PP", teacher: "-", room: "-" },
-                { id: 8, time: "13:00 - 15:00", subject: "DPD", teacher: "-", room: "Lab Komputer" },
-                { id: 9, time: "15:00 - 15:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
-                { id: 10, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
-                { id: 11, time: "16:00 - 16:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
-                { id: 12, time: "16:30 - 17:30", subject: "Bahasa Indonesia", teacher: "-", room: "-" }
+                { id: 7, time: "07:00 - 08:30", subject: "Kimia", teacher: "Ahmad Fauzi", room: "Lab Kimia" },
+                { id: 8, time: "08:30 - 10:00", subject: "Matematika", teacher: "Dra. Siti Aminah", room: "R-101" },
+                { id: 9, time: "10:00 - 10:15", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 10, time: "10:15 - 11:45", subject: "Bahasa Inggris", teacher: "John Smith", room: "R-102" },
+                { id: 11, time: "11:45 - 12:30", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 12, time: "12:30 - 14:00", subject: "Sejarah", teacher: "Agus Supriyanto", room: "R-101" }
             ],
             "Rabu": [
-                { id: 13, time: "12:30 - 13:30", subject: "Sejarah", teacher: "-", room: "-" },
-                { id: 14, time: "13:30 - 14:00", subject: "BTQ", teacher: "-", room: "-" },
-                { id: 15, time: "14:00 - 15:30", subject: "Ipas", teacher: "-", room: "-" },
-                { id: 16, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
-                { id: 17, time: "16:00 - 17:30", subject: "DPD", teacher: "-", room: "Lab Komputer" },
-                { id: 18, time: "-", subject: "-", teacher: "-", room: "-" }
+                { id: 13, time: "07:00 - 08:30", subject: "Fisika", teacher: "Dr. Budi Hartono", room: "Lab Fisika" },
+                { id: 14, time: "08:30 - 10:00", subject: "Biologi", teacher: "Dra. Rina Wulandari", room: "Lab Bio" },
+                { id: 15, time: "10:00 - 10:15", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 16, time: "10:15 - 11:45", subject: "Matematika", teacher: "Dra. Siti Aminah", room: "R-101" },
+                { id: 17, time: "11:45 - 12:30", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 18, time: "12:30 - 14:00", subject: "Geografi", teacher: "Dewi Kusuma", room: "R-103" }
             ],
             "Kamis": [
-                { id: 19, time: "12:30 - 13:30", subject: "Seni Budaya", teacher: "-", room: "-" },
-                { id: 20, time: "13:30 - 14:30", subject: "PJOK", teacher: "-", room: "-" },
-                { id: 21, time: "14:30 - 15:30", subject: "DPD", teacher: "-", room: "Lab Komputer" },
-                { id: 22, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
-                { id: 23, time: "16:00 - 16:30", subject: "DPD", teacher: "-", room: "Lab Komputer" },
-                { id: 24, time: "16:30 - 17:30", subject: "KDKA", teacher: "-", room: "-" }
+                { id: 19, time: "07:00 - 08:30", subject: "Bahasa Indonesia", teacher: "Sri Wahyuni", room: "R-101" },
+                { id: 20, time: "08:30 - 10:00", subject: "Kimia", teacher: "Ahmad Fauzi", room: "Lab Kimia" },
+                { id: 21, time: "10:00 - 10:15", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 22, time: "10:15 - 11:45", subject: "Bahasa Inggris", teacher: "John Smith", room: "R-102" },
+                { id: 23, time: "11:45 - 12:30", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 24, time: "12:30 - 14:00", subject: "Matematika", teacher: "Dra. Siti Aminah", room: "R-101" }
             ],
             "Jumat": [
-                { id: 25, time: "12:30 - 13:30", subject: "-", teacher: "-", room: "-" },
-                { id: 26, time: "13:30 - 15:00", subject: "DPD", teacher: "-", room: "Lab Komputer" },
-                { id: 27, time: "15:00 - 15:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
-                { id: 28, time: "15:30 - 16:00", subject: "Istirahat", teacher: "-", room: "-" },
-                { id: 29, time: "16:00 - 16:30", subject: "Bahasa Inggris", teacher: "-", room: "-" },
-                { id: 30, time: "16:30 - 17:30", subject: "Bahasa Indonesia", teacher: "-", room: "-" }
+                { id: 25, time: "07:00 - 08:30", subject: "Biologi", teacher: "Dra. Rina Wulandari", room: "Lab Bio" },
+                { id: 26, time: "08:30 - 10:00", subject: "Sejarah", teacher: "Agus Supriyanto", room: "R-101" },
+                { id: 27, time: "10:00 - 10:15", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 28, time: "10:15 - 11:45", subject: "Geografi", teacher: "Dewi Kusuma", room: "R-103" },
+                { id: 29, time: "11:45 - 12:30", subject: "Istirahat", teacher: "-", room: "-" },
+                { id: 30, time: "12:30 - 14:00", subject: "Pendidikan Agama", teacher: "Ustadz Ahmad", room: "R-101" }
             ]
         };
 
-        // Global variables
+        const defaultWaliKelas = {
+            name: "Dra. Dewi Kusuma Wardani, M.Pd",
+            nip: "NIP. 19780515 200502 2 003",
+            email: "dewi.wardani@sekolah.id",
+            phone: "0812-3456-7890"
+        };
+
+        // ============================================
+        // LOCAL STORAGE FUNCTIONS
+        // ============================================
+        
+        function initStorage() {
+            // Check if data exists in localStorage, if not, set default data
+            if (!localStorage.getItem('school_students')) {
+                localStorage.setItem('school_students', JSON.stringify(defaultStudentsData));
+            }
+            if (!localStorage.getItem('school_teachers')) {
+                localStorage.setItem('school_teachers', JSON.stringify(defaultTeachersData));
+            }
+            if (!localStorage.getItem('school_schedule')) {
+                localStorage.setItem('school_schedule', JSON.stringify(defaultScheduleData));
+            }
+            if (!localStorage.getItem('school_walikelas')) {
+                localStorage.setItem('school_walikelas', JSON.stringify(defaultWaliKelas));
+            }
+        }
+
+        function getStudents() {
+            return JSON.parse(localStorage.getItem('school_students')) || defaultStudentsData;
+        }
+
+        function setStudents(data) {
+            localStorage.setItem('school_students', JSON.stringify(data));
+        }
+
+        function getTeachers() {
+            return JSON.parse(localStorage.getItem('school_teachers')) || defaultTeachersData;
+        }
+
+        function setTeachers(data) {
+            localStorage.setItem('school_teachers', JSON.stringify(data));
+        }
+
+        function getSchedule() {
+            return JSON.parse(localStorage.getItem('school_schedule')) || defaultScheduleData;
+        }
+
+        function setSchedule(data) {
+            localStorage.setItem('school_schedule', JSON.stringify(data));
+        }
+
+        function getWaliKelas() {
+            return JSON.parse(localStorage.getItem('school_walikelas')) || defaultWaliKelas;
+        }
+
+        function setWaliKelas(data) {
+            localStorage.setItem('school_walikelas', JSON.stringify(data));
+        }
+
+        function resetAllData() {
+            if (!confirm('Apakah Anda yakin ingin reset semua data ke default? Semua perubahan akan hilang!')) {
+                return;
+            }
+            
+            localStorage.removeItem('school_students');
+            localStorage.removeItem('school_teachers');
+            localStorage.removeItem('school_schedule');
+            localStorage.removeItem('school_walikelas');
+            
+            initStorage();
+            
+            // Refresh displays
+            if (document.getElementById('admin-section-siswa').style.display !== 'none') {
+                renderAdminStudents();
+            }
+            if (document.getElementById('admin-section-guru').style.display !== 'none') {
+                renderAdminTeachers();
+            }
+            if (document.getElementById('admin-section-jadwal').style.display !== 'none') {
+                renderAdminSchedule();
+            }
+            
+            updateWaliKelasDisplay();
+            showToast('Semua data berhasil direset ke default!');
+        }
+
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+        
         let currentEditId = null;
         let currentEditType = null;
         let isAdmin = false;
@@ -1609,6 +1717,9 @@
         const userDashboard = document.getElementById('userDashboard');
         const adminDashboard = document.getElementById('adminDashboard');
         const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Initialize storage on load
+        initStorage();
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1648,6 +1759,7 @@
             userDashboard.classList.add('show');
             document.getElementById('userName').textContent = username;
             
+            updateWaliKelasDisplay();
             renderUserStudents();
             renderUserTeachers();
             renderUserSchedule();
@@ -1674,11 +1786,22 @@
                 loginPage.style.display = 'flex';
                 loginForm.reset();
                 
-                // Reset states
                 document.getElementById('email').focus();
                 showUserMenu('siswa');
                 hideAllAdminSections();
             }, 800);
+        }
+
+        // ============================================
+        // WALI KELAS DISPLAY
+        // ============================================
+        
+        function updateWaliKelasDisplay() {
+            const wk = getWaliKelas();
+            document.getElementById('waliKelasName').textContent = wk.name;
+            document.getElementById('waliKelasNIP').textContent = wk.nip;
+            document.getElementById('waliKelasEmail').textContent = wk.email;
+            document.getElementById('waliKelasPhone').textContent = wk.phone;
         }
 
         // ============================================
@@ -1721,8 +1844,9 @@
         // ============================================
         
         function renderUserStudents() {
+            const students = getStudents();
             const tbody = document.getElementById('userStudentsTable');
-            tbody.innerHTML = studentsData.map(student => `
+            tbody.innerHTML = students.map(student => `
                 <tr>
                     <td><span class="absen-number">${student.absen}</span></td>
                     <td>
@@ -1730,19 +1854,20 @@
                             <div class="user-avatar"><i class="ph ph-student"></i></div>
                             <div class="user-details">
                                 <h4>${student.name}</h4>
-                                <span>Kelas X DKV</span>
+                                <span>Kelas X IPA 1</span>
                             </div>
                         </div>
                     </td>
                     <td><span class="badge badge-gold">${student.status}</span></td>
                 </tr>
             `).join('');
-            document.getElementById('count-siswa').textContent = `${studentsData.length} Siswa`;
+            document.getElementById('count-siswa').textContent = `${students.length} Siswa`;
         }
 
         function renderUserTeachers() {
+            const teachers = getTeachers();
             const tbody = document.getElementById('userTeachersTable');
-            tbody.innerHTML = teachersData.map(teacher => `
+            tbody.innerHTML = teachers.map(teacher => `
                 <tr>
                     <td>
                         <div class="user-info">
@@ -1759,12 +1884,13 @@
                     <td><span class="badge badge-blue">${teacher.class}</span></td>
                 </tr>
             `).join('');
-            document.getElementById('count-guru').textContent = `${teachersData.length} Guru`;
+            document.getElementById('count-guru').textContent = `${teachers.length} Guru`;
         }
 
         function renderUserSchedule() {
+            const schedule = getSchedule();
             const container = document.getElementById('userScheduleContainer');
-            container.innerHTML = renderScheduleHTML(scheduleData);
+            container.innerHTML = renderScheduleHTML(schedule);
         }
 
         // ============================================
@@ -1772,8 +1898,9 @@
         // ============================================
         
         function renderAdminStudents() {
+            const students = getStudents();
             const tbody = document.getElementById('adminStudentsTable');
-            tbody.innerHTML = studentsData.map(student => `
+            tbody.innerHTML = students.map(student => `
                 <tr>
                     <td><span class="absen-number">${student.absen}</span></td>
                     <td>
@@ -1800,8 +1927,9 @@
         }
 
         function renderAdminTeachers() {
+            const teachers = getTeachers();
             const tbody = document.getElementById('adminTeachersTable');
-            tbody.innerHTML = teachersData.map(teacher => `
+            tbody.innerHTML = teachers.map(teacher => `
                 <tr>
                     <td>
                         <div class="user-info">
@@ -1830,10 +1958,11 @@
         }
 
         function renderAdminSchedule() {
+            const schedule = getSchedule();
             const container = document.getElementById('adminScheduleContainer');
             let html = '';
             
-            Object.entries(scheduleData).forEach(([day, lessons]) => {
+            Object.entries(schedule).forEach(([day, lessons]) => {
                 html += `
                     <div class="day-schedule">
                         <div class="day-header" style="justify-content: space-between;">
@@ -1908,8 +2037,9 @@
             let content = '';
             
             if (type === 'siswa') {
+                const students = getStudents();
                 modalTitle.innerHTML = `<i class="ph ph-student"></i> ${title} Data Siswa`;
-                const student = id ? studentsData.find(s => s.id === id) : {};
+                const student = id ? students.find(s => s.id === id) : {};
                 content = `
                     <div class="form-group">
                         <label class="form-label">Nomor Absen</label>
@@ -1928,8 +2058,9 @@
                     </div>
                 `;
             } else if (type === 'guru') {
+                const teachers = getTeachers();
                 modalTitle.innerHTML = `<i class="ph ph-chalkboard-teacher"></i> ${title} Data Guru`;
-                const teacher = id ? teachersData.find(t => t.id === id) : {};
+                const teacher = id ? teachers.find(t => t.id === id) : {};
                 content = `
                     <div class="form-group">
                         <label class="form-label">Nama Lengkap</label>
@@ -1941,7 +2072,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Kelas</label>
-                        <input type="text" class="form-input" id="input-class" value="${teacher.class || 'X DKV'}" placeholder="Masukkan kelas">
+                        <input type="text" class="form-input" id="input-class" value="${teacher.class || 'X IPA 1'}" placeholder="Masukkan kelas">
                     </div>
                 `;
             }
@@ -1958,6 +2089,7 @@
 
         function saveData() {
             if (currentEditType === 'siswa') {
+                const students = getStudents();
                 const absen = parseInt(document.getElementById('input-absen').value);
                 const name = document.getElementById('input-name').value;
                 const status = document.getElementById('input-status').value;
@@ -1968,19 +2100,21 @@
                 }
                 
                 if (currentEditId) {
-                    const index = studentsData.findIndex(s => s.id === currentEditId);
-                    studentsData[index] = { ...studentsData[index], absen, name, status };
+                    const index = students.findIndex(s => s.id === currentEditId);
+                    students[index] = { ...students[index], absen, name, status };
                     showToast('Data siswa berhasil diupdate!');
                 } else {
-                    const newId = Math.max(...studentsData.map(s => s.id)) + 1;
-                    studentsData.push({ id: newId, absen, name, status });
+                    const newId = Math.max(...students.map(s => s.id), 0) + 1;
+                    students.push({ id: newId, absen, name, status });
                     showToast('Siswa baru berhasil ditambahkan!');
                 }
                 
+                setStudents(students);
                 renderAdminStudents();
-                if (!isAdmin) renderUserStudents();
+                renderUserStudents();
                 
             } else if (currentEditType === 'guru') {
+                const teachers = getTeachers();
                 const name = document.getElementById('input-name').value;
                 const subject = document.getElementById('input-subject').value;
                 const cls = document.getElementById('input-class').value;
@@ -1991,17 +2125,18 @@
                 }
                 
                 if (currentEditId) {
-                    const index = teachersData.findIndex(t => t.id === currentEditId);
-                    teachersData[index] = { ...teachersData[index], name, subject, class: cls };
+                    const index = teachers.findIndex(t => t.id === currentEditId);
+                    teachers[index] = { ...teachers[index], name, subject, class: cls };
                     showToast('Data guru berhasil diupdate!');
                 } else {
-                    const newId = Math.max(...teachersData.map(t => t.id)) + 1;
-                    teachersData.push({ id: newId, name, subject, class: cls });
+                    const newId = Math.max(...teachers.map(t => t.id), 0) + 1;
+                    teachers.push({ id: newId, name, subject, class: cls });
                     showToast('Guru baru berhasil ditambahkan!');
                 }
                 
+                setTeachers(teachers);
                 renderAdminTeachers();
-                if (!isAdmin) renderUserTeachers();
+                renderUserTeachers();
             }
             
             closeModal();
@@ -2015,14 +2150,18 @@
             if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
             
             if (type === 'siswa') {
-                studentsData = studentsData.filter(s => s.id !== id);
+                let students = getStudents();
+                students = students.filter(s => s.id !== id);
+                setStudents(students);
                 renderAdminStudents();
-                if (!isAdmin) renderUserStudents();
+                renderUserStudents();
                 showToast('Siswa berhasil dihapus!');
             } else if (type === 'guru') {
-                teachersData = teachersData.filter(t => t.id !== id);
+                let teachers = getTeachers();
+                teachers = teachers.filter(t => t.id !== id);
+                setTeachers(teachers);
                 renderAdminTeachers();
-                if (!isAdmin) renderUserTeachers();
+                renderUserTeachers();
                 showToast('Guru berhasil dihapus!');
             }
         }
@@ -2038,8 +2177,11 @@
             const teacher = prompt("Masukkan nama guru:");
             const room = prompt("Masukkan ruangan:");
             
-            const newId = Math.max(...Object.values(scheduleData).flat().map(i => i.id)) + 1;
-            scheduleData[day].push({
+            const schedule = getSchedule();
+            const allIds = Object.values(schedule).flat().map(i => i.id);
+            const newId = Math.max(...allIds, 0) + 1;
+            
+            schedule[day].push({
                 id: newId,
                 time,
                 subject,
@@ -2047,13 +2189,15 @@
                 room: room || '-'
             });
             
+            setSchedule(schedule);
             renderAdminSchedule();
-            if (!isAdmin) renderUserSchedule();
+            renderUserSchedule();
             showToast('Jadwal berhasil ditambahkan!');
         }
 
         function editScheduleItem(day, id) {
-            const item = scheduleData[day].find(i => i.id === id);
+            const schedule = getSchedule();
+            const item = schedule[day].find(i => i.id === id);
             
             const time = prompt("Edit waktu:", item.time);
             if (time === null) return;
@@ -2064,26 +2208,30 @@
             const teacher = prompt("Edit guru:", item.teacher);
             const room = prompt("Edit ruangan:", item.room);
             
-            const index = scheduleData[day].findIndex(i => i.id === id);
-            scheduleData[day][index] = {
-                ...scheduleData[day][index],
+            const index = schedule[day].findIndex(i => i.id === id);
+            schedule[day][index] = {
+                ...schedule[day][index],
                 time: time || item.time,
                 subject: subject || item.subject,
                 teacher: teacher !== null ? teacher : item.teacher,
                 room: room !== null ? room : item.room
             };
             
+            setSchedule(schedule);
             renderAdminSchedule();
-            if (!isAdmin) renderUserSchedule();
+            renderUserSchedule();
             showToast('Jadwal berhasil diupdate!');
         }
 
         function deleteScheduleItem(day, id) {
             if (!confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) return;
             
-            scheduleData[day] = scheduleData[day].filter(i => i.id !== id);
+            const schedule = getSchedule();
+            schedule[day] = schedule[day].filter(i => i.id !== id);
+            
+            setSchedule(schedule);
             renderAdminSchedule();
-            if (!isAdmin) renderUserSchedule();
+            renderUserSchedule();
             showToast('Jadwal berhasil dihapus!');
         }
 
@@ -2161,4 +2309,4 @@
         document.getElementById('email').focus();
     </script>
 </body>
-</html>
+    </html>
